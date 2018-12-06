@@ -1,0 +1,7 @@
+**/node_modules
+.vscode
+.idea
+*.log
+package-lock.json
+/coverage
+.nyc_output

@@ -1,0 +1,46 @@
+{
+  "name": "js-deep-diff",
+  "version": "0.0.1",
+  "description": "Javascript object deep diff.",
+  "main": "diff.js",
+  "scripts": {
+    "test": "mocha test.js",
+    "test:coverage": "nyc mocha test.js",
+    "test:report": "nyc report && codecov"
+  },
+  "author": "joe223",
+  "license": "MIT",
+  "devDependencies": {
+    "codecov": "^3.1.0",
+    "deep-diff": "^1.0.2",
+    "deep-object-diff": "^1.1.0",
+    "expect": "^23.6.0",
+    "mocha": "^5.2.0",
+    "nyc": "^13.1.0"
+  },
+  "nyc": {
+		"report-dir": "./coverage",
+		"reporter": [
+      "lcov",
+			"text-summary"
+		],
+		"watermarks": {
+			"lines": [
+				70,
+				90
+			],
+			"functions": [
+				70,
+				90
+			],
+			"branches": [
+				70,
+				90
+			],
+			"statements": [
+				70,
+				90
+			]
+		}
+	}
+}
