@@ -1,8 +1,14 @@
 # js-deep-diff
 
-![js-deep-diff](https://travis-ci.com/joe223/js-deep-diff.svg?branch=master)
-![js-deep-diff](https://codecov.io/gh/joe223/js-deep-diff/branch/dev/graph/badge.svg)
-![js-deep-diff](https://img.shields.io/npm/l/js-deep-diff.svg)
+<a href="https://travis-ci.com/joe223/js-deep-diff">
+  <img src="https://travis-ci.com/joe223/js-deep-diff.svg?branch=master"/>
+</a>
+<a href="https://codecov.io/gh/joe223/js-deep-diff">
+  <img src="https://codecov.io/gh/joe223/js-deep-diff/branch/master/graph/badge.svg" />
+</a>
+<a href="https://npmjs.com/js-deep-diff">
+  <img src="https://img.shields.io/npm/v/js-deep-diff/latest.svg"/>
+</a>
 
 ```javascript
 const diff = require('js-deep-diff')
