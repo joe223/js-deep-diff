@@ -1,5 +1,7 @@
 # js-deep-diff
 
+> An lightly library for comparing two javascript object structure, 1kb after gziped.
+
 <a href="https://travis-ci.com/joe223/js-deep-diff">
   <img src="https://travis-ci.com/joe223/js-deep-diff.svg?branch=master"/>
 </a>
@@ -10,13 +12,43 @@
   <img src="https://img.shields.io/npm/v/js-deep-diff/latest.svg"/>
 </a>
 
+## Install
+
+```shell
+$ npm install js-deep-diff
+$ yarn add js-deep-diff
+```
+
+## Notice
+
+Something you should know is that：
+
+- `new String('string')` is **NOT** equal to `'string'`
+- `new Number(1)` is **NOT** equal to `1`
+- `new Boolean(false)` is **NOT** equal to `false`
+- `{0: 1}` is **NOT** equal to `[1]`
+- `new RegExp('\\s')` is **EQUAL** to `/\s/`
+- `new Date("1970-01-01T00:00:00.000Z")` is **EQUAL** to `new Date("Thu, 01 Jan 1970 00:00:00 GMT")`
+
+although `js-deep-diff` is using `Object.keys` for diff action.
+
+It's different with `deep-object-diff` and some library else. ([deep-object-diff]() regard `{0: 1}` as `[1]`).
+
+## Benchmark
+
+|[js-deep-diff](https://npmjs.com/js-deep-diff)|[deep-diff](https://npmjs.com/deep-diff)|[deep-object-diff](https://npmjs.com/deep-object-diff)|
+|---|---|---|
+|7.09278ms | 8.11372ms | 3.347934ms|
+
+## Usage
+
 ```javascript
 const diff = require('js-deep-diff')
 
 const lhs = {
   name: 'my object',
   description: 'it\'s an object!',
-  test: 'tt',
+  test: 'test',
   details: {
     it: 'has',
     an: 'array',
@@ -39,23 +71,24 @@ const rhs = {
 diff(lhs, rhs)
 ```
 
-got the differences:
+Then got the differences:
 
-```javascript
+```json
 [
     {
         "type": "EDIT",
         "path": [
             "name"
         ],
-        "value": "updated object"
+        "lhs": "my object",
+        "rhs": "updated object"
     },
     {
         "type": "DEL",
         "path": [
             "test"
         ],
-        "value": "tt"
+        "lhs": "test"
     },
     {
         "type": "EDIT",
@@ -64,7 +97,8 @@ got the differences:
             "with",
             2
         ],
-        "value": "more"
+        "lhs": "elements",
+        "rhs": "more"
     },
     {
         "type": "ADD",
@@ -73,7 +107,7 @@ got the differences:
             "with",
             3
         ],
-        "value": "elements"
+        "rhs": "elements"
     },
     {
         "type": "ADD",
@@ -82,7 +116,7 @@ got the differences:
             "with",
             4
         ],
-        "value": {
+        "rhs": {
             "than": "before"
         }
     }

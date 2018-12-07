@@ -5,7 +5,7 @@ function diffObject(lhs, rhs, changes = [], path = []) {
   const rhsRealType = realType(rhs)
 
   if (lhsRealType !== rhsRealType) {
-    changes.push(new EditAction(path, rhs))
+    changes.push(new EditAction(path, lhs, rhs))
   } else if (differ[lhsRealType]) {
     differ[lhsRealType](lhs, rhs, changes, path)
   }
@@ -25,27 +25,38 @@ const differ = {
 
   Date(lhs, rhs, changes = [], path = []) {
     if (lhs.getTime() !== rhs.getTime()) {
-      changes.push(new EditAction(path, rhs))
+      changes.push(new EditAction(path, lhs, rhs))
     }
   },
 
   Number(lhs, rhs, changes = [], path = []) {
     if (lhs.valueOf() !== rhs.valueOf()) {
-      changes.push(new EditAction(path, rhs))
+      changes.push(new EditAction(path, lhs, rhs))
+    }
+  },
+
+  String(lhs, rhs, changes = [], path = []) {
+    if (lhs.valueOf() !== rhs.valueOf()) {
+      changes.push(new EditAction(path, lhs, rhs))
     }
   },
 
   Boolean(lhs, rhs, changes = [], path = []) {
     if (lhs.valueOf() !== rhs.valueOf()) {
-      changes.push(new EditAction(path, rhs))
+      changes.push(new EditAction(path, lhs, rhs))
     }
   },
 
   RegExp(lhs, rhs, changes = [], path = []) {
     if (lhs.toString() !== rhs.toString()) {
-      changes.push(new EditAction(path, rhs))
+      changes.push(new EditAction(path, lhs, rhs))
     }
   },
+
+  // One problem:
+  // const a = () => 1
+  // const b = () => { return 1 }
+  // a is equal to b ?
 
   // Function(lhs, rhs, changes = [], path = []) {
   //   if (lhs.toString() !== rhs.toString()) {
@@ -62,7 +73,7 @@ const differ = {
       if (i < lhs.length) {
         diff(lhs[i], rhs[i], changes, p)
       } else {
-        changes.push(new AddAction(p, rhs[i]))
+        changes.push(new AddAction(p, lhs[i], rhs[i]))
       }
     }
   }
@@ -70,21 +81,21 @@ const differ = {
 
 function diffPrimitive(lhs, rhs, changes = [], path = []) {
   if (lhs !== rhs) {
-    changes.push(new EditAction(path, rhs))
+    changes.push(new EditAction(path, lhs, rhs))
   }
 }
 
 function diff(lhs, rhs, changes = [], path = []) {
-  let lhsType = type(lhs)
-  let rhsType = type(rhs)
+  const lhsType = type(lhs)
+  const rhsType = type(rhs)
 
   if (lhsType !== rhsType) {
     if (lhs === undefined) {
-      changes.push(new AddAction(path, rhs))
+      changes.push(new AddAction(path, lhs, rhs))
     } else if (rhs === undefined) {
-      changes.push(new DeleteAction(path, lhs))
+      changes.push(new DeleteAction(path, lhs, rhs))
     } else {
-      changes.push(new EditAction(path, rhs))
+      changes.push(new EditAction(path, lhs, rhs))
     }
 
     // Object type
@@ -106,26 +117,29 @@ function realType(val) {
 }
 
 class AddAction {
-  constructor(path, value) {
+  constructor(path, lhs, rhs) {
     this.type = 'ADD'
     this.path = path
-    this.value = value
+    this.lhs = lhs
+    this.rhs = rhs
   }
 }
 
 class EditAction {
-  constructor(path, value) {
+  constructor(path, lhs, rhs) {
     this.type = 'EDIT'
     this.path = path
-    this.value = value
+    this.lhs = lhs
+    this.rhs = rhs
   }
 }
 
 class DeleteAction {
-  constructor(path, value) {
+  constructor(path, lhs, rhs) {
     this.type = 'DEL'
     this.path = path
-    this.value = value
+    this.lhs = lhs
+    this.rhs = rhs
   }
 }
 

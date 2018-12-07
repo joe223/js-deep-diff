@@ -1,27 +1,31 @@
 {
-  "name": "js-deep-diff",
-  "version": "0.0.1",
-  "description": "Javascript object deep diff.",
-  "main": "diff.js",
-  "scripts": {
-    "test": "mocha test.js",
-    "test:coverage": "nyc mocha test.js",
-    "test:report": "nyc report && codecov"
-  },
-  "author": "joe223",
-  "license": "MIT",
-  "devDependencies": {
-    "codecov": "^3.1.0",
-    "deep-diff": "^1.0.2",
-    "deep-object-diff": "^1.1.0",
-    "expect": "^23.6.0",
-    "mocha": "^5.2.0",
-    "nyc": "^13.1.0"
-  },
-  "nyc": {
+	"name": "js-deep-diff",
+	"version": "0.0.1",
+	"description": "Javascript object deep diff.",
+	"main": "dist/index.js",
+	"scripts": {
+		"build": "node build.js",
+		"test": "mocha test/index.js",
+		"benchmark": "node test/benchmark.js",
+		"test:coverage": "nyc mocha test/index.js",
+		"test:report": "nyc report && codecov"
+	},
+	"author": "joe223",
+	"license": "MIT",
+	"devDependencies": {
+		"@zeit/ncc": "^0.5.0",
+		"codecov": "^3.1.0",
+		"deep-diff": "^1.0.2",
+		"deep-object-diff": "^1.1.0",
+		"expect": "^23.6.0",
+		"gzip-size": "^5.0.0",
+		"mocha": "^5.2.0",
+		"nyc": "^13.1.0"
+	},
+	"nyc": {
 		"report-dir": "./coverage",
 		"reporter": [
-      "lcov",
+			"lcov",
 			"text-summary"
 		],
 		"watermarks": {
