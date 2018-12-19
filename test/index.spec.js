@@ -1,4 +1,5 @@
-const diff = require('../diff')
+const diff = require('../diff')()
+const diff2 = require('../diff')({ enableDeleteAction: true })
 const expect = require('expect')
 
 describe('diff', () => {
@@ -190,12 +191,17 @@ describe('diff', () => {
 
     var rhs = {
       name: 'diff',
-      group: [1, 2, 3, 4, 5, 6]
+      group: [1, 2, 3, 4, 5, 6, 7]
     }
     expect(diff(lhs, rhs)).toEqual([{
       path: ['group', 5],
       lhs: undefined,
       rhs: 6,
+      type: 'ADD'
+    }, {
+      path: ['group', 6],
+      lhs: undefined,
+      rhs: 7,
       type: 'ADD'
     }])
   })
@@ -229,10 +235,10 @@ describe('diff', () => {
       group: [1, 2, 3, 4, 5, 6]
     }
     expect(diff(lhs, rhs)).toEqual([{
-      path: ['group', 6],
-      lhs: 7,
-      rhs: undefined,
-      type: 'DEL'
+      path: ['group'],
+      lhs: [1, 2, 3, 4, 5, 6, 7],
+      rhs: [1, 2, 3, 4, 5, 6],
+      type: 'EDIT'
     }])
   })
 
@@ -244,12 +250,18 @@ describe('diff', () => {
 
     var rhs = {
       name: 'diff',
+      details: {},
       group: [1, 2, 3, 4, 5]
     }
     expect(diff(lhs, rhs)).toEqual([{
       path: ['name'],
       lhs: undefined,
       rhs: 'diff',
+      type: 'ADD'
+    }, {
+      path: ['details'],
+      lhs: undefined,
+      rhs: {},
       type: 'ADD'
     }])
   })
@@ -264,10 +276,15 @@ describe('diff', () => {
       group: [1, 2, 3, 4, 5]
     }
     expect(diff(lhs, rhs)).toEqual([{
-      path: ['name'],
-      lhs: 'diff',
-      rhs: undefined,
-      type: 'DEL'
+      path: [],
+      lhs: {
+        name: 'diff',
+        group: [1, 2, 3, 4, 5]
+      },
+      rhs: {
+        group: [1, 2, 3, 4, 5]
+      },
+      type: 'EDIT'
     }])
   })
 
@@ -337,6 +354,112 @@ describe('diff', () => {
         rhs: {
           than: 'before'
         }
+      }
+    ])
+  })
+
+  it('enableDeleteAction: Array', () => {
+    const lhs = {
+      details: {
+        it: 'has',
+        an: 'array',
+        with: ['a', 'few', 'more']
+      }
+    }
+
+    const rhs = {
+      details: {
+        it: 'has',
+        an: 'array',
+        with: ['a', 'few']
+      }
+    }
+
+    expect(diff(lhs, rhs)).toEqual([{
+        type: 'EDIT',
+        path: [
+          'details',
+          'with'
+        ],
+        lhs: ['a', 'few', 'more'],
+        rhs: ['a', 'few']
+      }
+    ])
+
+    expect(diff2(lhs, rhs)).toEqual([{
+        type: 'EDIT',
+        path: [
+          'details',
+          'with'
+        ],
+        lhs: ['a', 'few', 'more'],
+        rhs: ['a', 'few']
+      },
+      {
+        type: 'DEL',
+        path: [
+          'details',
+          'with',
+          2
+        ],
+        lhs: 'more',
+        rhs: undefined
+      }
+    ])
+  })
+
+  it('enableDeleteAction: Object', () => {
+    const lhs = {
+      details: {
+        it: 'has',
+        an: 'array',
+        with: {
+          0: 0
+        }
+      }
+    }
+
+    const rhs = {
+      details: {
+        it: 'has',
+        an: 'array',
+        with: {}
+      }
+    }
+
+    expect(diff(lhs, rhs)).toEqual([{
+        type: 'EDIT',
+        path: [
+          'details',
+          'with'
+        ],
+        lhs: {
+          0: 0
+        },
+        rhs: {}
+      }
+    ])
+
+    expect(diff2(lhs, rhs)).toEqual([{
+        type: 'EDIT',
+        path: [
+          'details',
+          'with'
+        ],
+        lhs: {
+          0: 0
+        },
+        rhs: {}
+      },
+      {
+        type: 'DEL',
+        path: [
+          'details',
+          'with',
+          '0'
+        ],
+        lhs: 0,
+        rhs: undefined
       }
     ])
   })

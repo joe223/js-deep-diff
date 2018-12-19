@@ -1,24 +1,26 @@
 const deepdiff = require('deep-diff')
 const deepObjectDiff = require('deep-object-diff').diff
-const diff = require('../diff/')
+const diff = require('../diff')({enableDeleteAction: false})
 const a = require('./a')
 const b = require('./b')
 
 const NS_PER_SEC = 1e9;
 
-var lhs = {
+const lhs = {
   name: 'my object',
   description: 'it\'s an object!',
-  test: 'tt',
   details: {
     it: 'has',
     an: 'array',
     with: ['a', 'few', 'elements']
   },
-  arr: [1]
+  others: {
+    distance: 0,
+    hight: 1
+  }
 }
 
-var rhs = {
+const rhs = {
   name: 'updated object',
   description: 'it\'s an object!',
   details: {
@@ -28,7 +30,9 @@ var rhs = {
       than: 'before'
     }]
   },
-  arr: {0: 1}
+  others: {
+    distance: 0
+  }
 }
 
 function _diff(name, fn, repeat = 100) {
@@ -57,4 +61,4 @@ console.log([
   _diff('deepObjectDiff', deepObjectDiff, 100)
 ].map(item => `${item.name}: Average time is ${item.time} in ${item.times} times.`).join('\r\n'))
 
-// console.log(JSON.stringify(deepObjectDiff(lhs, rhs), null, 4))
+// console.log(JSON.stringify(diff(lhs, rhs), null, 4))
