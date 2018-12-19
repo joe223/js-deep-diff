@@ -34,12 +34,6 @@ although `js-deep-diff` is using `Object.keys` for diff action.
 
 It's different with `deep-object-diff` and some library else. ([deep-object-diff]() regard `{0: 1}` as `[1]`).
 
-## Benchmark
-
-|[js-deep-diff](https://npmjs.com/js-deep-diff)|[deep-diff](https://npmjs.com/deep-diff)|[deep-object-diff](https://npmjs.com/deep-object-diff)|
-|---|---|---|
-|7.09278ms | 8.11372ms | 3.347934ms|
-
 ## Usage
 
 ```javascript
@@ -122,3 +116,43 @@ Then got the differences:
     }
 ]
 ```
+
+## Test
+
+```shell
+$ npm run test
+```
+
+    ✓ Same value
+    ✓ Date
+    ✓ Boolean
+    ✓ Number
+    ✓ String
+    ✓ RegExp
+    ✓ pirmitive
+    ✓ Add action in array
+    ✓ Edit action in array
+    ✓ Delete action in array
+    ✓ Add action in object
+    ✓ Delete action in object
+    ✓ Edit action in object
+    ✓ Nested object
+
+    14 passing (22ms)
+
+## Coverage
+
+```shell
+$ npm run test:coverage
+```
+
+    Statements   : 100% ( 56/56 )
+    Branches     : 58.7% ( 27/46 )
+    Functions    : 100% ( 16/16 )
+    Lines        : 100% ( 56/56 )
+
+## Benchmark
+
+|[js-deep-diff](https://npmjs.com/js-deep-diff)|[deep-diff](https://npmjs.com/deep-diff)|[deep-object-diff](https://npmjs.com/deep-object-diff)|
+|---|---|---|
+|7.09278ms | 8.11372ms | 3.347934ms|
