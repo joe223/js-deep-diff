@@ -200,13 +200,16 @@ Then got the differences:
 $ npm run test
 ```
 
+  diff
     ✓ Same value
+    ✓ Empty value: null
+    ✓ Empty value: undefind
     ✓ Date
     ✓ Boolean
     ✓ Number
     ✓ String
     ✓ RegExp
-    ✓ pirmitive
+    ✓ Pirmitive value
     ✓ Add action in array
     ✓ Edit action in array
     ✓ Delete action in array
@@ -214,8 +217,11 @@ $ npm run test
     ✓ Delete action in object
     ✓ Edit action in object
     ✓ Nested object
+    ✓ enableDeleteAction: Array
+    ✓ enableDeleteAction: Object
 
-    14 passing (22ms)
+
+  18 passing (26ms)
 
 ## Coverage
 
