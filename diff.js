@@ -1,3 +1,5 @@
+'use strict';
+
 function factory (config = {}) {
   const undefined = void(0)
 
@@ -21,7 +23,7 @@ function factory (config = {}) {
       const innerChanges = []
       let hasDeleteAction = false
 
-      for (key of keys) {
+      for (let key of keys) {
         if (rhs[key] === undefined) {
           !hasDeleteAction && changes.push(new EditAction(path, lhs, rhs))
           hasDeleteAction = true
