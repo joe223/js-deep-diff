@@ -16,6 +16,43 @@ describe('diff', () => {
     expect(diff(lhs, rhs)).toEqual([])
   })
 
+  it('Empty value: null', () => {
+    var lhs = null
+
+    var rhs = {
+      name: 'diff',
+      age: 1
+    }
+    expect(diff(lhs, rhs)).toEqual([{
+      path: [],
+      type: 'EDIT',
+      lhs: null,
+      rhs: {
+        name: 'diff',
+        age: 1
+      }
+    }])
+  })
+
+
+  it('Empty value: undefind', () => {
+    var lhs = undefined
+
+    var rhs = {
+      name: 'diff',
+      age: 1
+    }
+    expect(diff(lhs, rhs)).toEqual([{
+      path: [],
+      type: 'ADD',
+      lhs: undefined,
+      rhs: {
+        name: 'diff',
+        age: 1
+      }
+    }])
+  })
+
   it('Date', () => {
     var lhs = {
       time: new Date(0),
@@ -150,7 +187,7 @@ describe('diff', () => {
     }])
   })
 
-  it('pirmitive', () => {
+  it('Pirmitive value', () => {
     var lhs = {
       name: 'joe',
       age: 1,
